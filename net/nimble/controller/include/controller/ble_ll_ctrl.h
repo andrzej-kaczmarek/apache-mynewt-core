@@ -250,6 +250,8 @@ void ble_ll_hci_ev_encrypt_chg(struct ble_ll_conn_sm *connsm, uint8_t status);
 int ble_ll_hci_ev_ltk_req(struct ble_ll_conn_sm *connsm);
 int ble_ll_hci_ev_hw_err(uint8_t hw_err);
 void ble_ll_hci_ev_databuf_overflow(void);
+void ble_ll_hci_ev_vnd_llcp_trace(uint8_t ll_type, uint16_t handle, void *pdu,
+                                  size_t length);
 
 
 void ble_ll_calc_session_key(struct ble_ll_conn_sm *connsm);

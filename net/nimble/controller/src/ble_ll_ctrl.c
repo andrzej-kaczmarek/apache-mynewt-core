@@ -23,6 +23,7 @@
 #include "nimble/ble.h"
 #include "nimble/nimble_opt.h"
 #include "nimble/hci_common.h"
+#include "nimble/hci_vendor.h"
 #include "controller/ble_ll.h"
 #include "controller/ble_ll_hci.h"
 #include "controller/ble_ll_ctrl.h"
@@ -1542,6 +1543,11 @@ ble_ll_ctrl_rx_pdu(struct ble_ll_conn_sm *connsm, struct os_mbuf *om)
     dptr = om->om_data;
     len = dptr[1];
     opcode = dptr[2];
+
+#if MYNEWT_VAL(BLE_LL_HCI_VND_LLCP_TRACE)
+    ble_ll_hci_ev_vnd_llcp_trace(BLE_HCI_LLCP_TRACE_RX, connsm->conn_handle,
+                                 &dptr[2], len);
+#endif
 
     /*
      * rspbuf points to first byte of response. The response buffer does not

@@ -27,6 +27,7 @@
 #include "nimble/ble.h"
 #include "nimble/nimble_opt.h"
 #include "nimble/hci_common.h"
+#include "nimble/hci_vendor.h"
 #include "nimble/ble_hci_trans.h"
 #include "ble/xcvr.h"
 #include "controller/ble_ll.h"
@@ -3105,6 +3106,11 @@ ble_ll_conn_enqueue_pkt(struct ble_ll_conn_sm *connsm, struct os_mbuf *om,
     if (hdr_byte == BLE_LL_LLID_CTRL) {
         om->om_len = length;
         OS_MBUF_PKTHDR(om)->omp_len = length;
+
+#if MYNEWT_VAL(BLE_LL_HCI_VND_LLCP_TRACE)
+        ble_ll_hci_ev_vnd_llcp_trace(BLE_HCI_LLCP_TRACE_TX, connsm->conn_handle,
+                                     om->om_data, length);
+#endif
     }
 
     /* Set BLE transmit header */

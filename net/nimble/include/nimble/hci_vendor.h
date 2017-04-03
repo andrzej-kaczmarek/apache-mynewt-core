@@ -42,8 +42,14 @@ extern "C" {
 #define BLE_HCI_MULTI_ADV_SET_RAND_ADDR_LEN (8)
 #define BLE_HCI_MULTI_ADV_ENABLE_LEN        (3)
 
+/* Vendor specific events */
+#define BLE_HCI_EVENT_VND_LLCP_TRACE        (0x03)
+
 /* Vendor specific events (LE meta events) */
 #define BLE_HCI_LE_SUBEV_ADV_STATE_CHG      (0x55)
+
+#define BLE_HCI_LLCP_TRACE_RX       (0x03)
+#define BLE_HCI_LLCP_TRACE_TX       (0x04)
 
 /* Data structures associated with vendor specific commands */
 struct hci_vendor_capabilities

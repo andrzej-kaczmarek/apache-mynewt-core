@@ -22,6 +22,7 @@
 #include "syscfg/syscfg.h"
 #include "nimble/ble.h"
 #include "nimble/hci_common.h"
+#include "nimble/hci_vendor.h"
 #include "nimble/ble_hci_trans.h"
 #include "controller/ble_ll.h"
 #include "controller/ble_ll_hci.h"
@@ -265,5 +266,24 @@ ble_ll_hci_ev_databuf_overflow(void)
             evbuf[2] = BLE_HCI_EVENT_ACL_BUF_OVERFLOW;
             ble_ll_hci_event_send(evbuf);
         }
+    }
+}
+
+void
+ble_ll_hci_ev_vnd_llcp_trace(uint8_t ll_type, uint16_t handle, void *pdu,
+                             size_t length)
+{
+    uint8_t *evbuf;
+
+    evbuf = ble_hci_trans_buf_alloc(BLE_HCI_TRANS_BUF_EVT_HI);
+    if (evbuf) {
+        evbuf[0] = BLE_HCI_EVCODE_VENDOR;
+        evbuf[1] = 4 + length;
+        evbuf[2] = BLE_HCI_EVENT_VND_LLCP_TRACE;
+        evbuf[3] = ll_type;
+        put_le16(evbuf + 4, handle);
+        memcpy(evbuf + 6, pdu, length);
+
+        ble_ll_hci_event_send(evbuf);
     }
 }
