@@ -26,4 +26,12 @@ pkg.cflags: -Dtimegm=mktime
 
 pkg.deps:
     - kernel/os
+    - net/nimble/controller
+    - net/nimble/host
+    - net/nimble/host/services/gap
+    - net/nimble/host/services/gatt
+    - net/nimble/host/store/ram
+    - net/nimble/transport/ram
     - sys/console/full
+    - sys/log/full
+    - sys/stats/full
