@@ -28,6 +28,7 @@ pkg.deps:
     - kernel/os
     - sys/flash_map
     - util/cbmem
+    - libc/tinyprintf
 pkg.deps.LOG_FCB:
     - hw/hal
     - fs/fcb

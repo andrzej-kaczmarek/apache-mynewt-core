@@ -29,6 +29,7 @@
 #include <inttypes.h>
 #include "os/os.h"
 #include "log/log.h"
+#include "tinyprintf/tinyprintf.h"
 #if MYNEWT_VAL(BLE_MONITOR_UART)
 #include "uart/uart.h"
 #endif
@@ -334,7 +335,7 @@ ble_monitor_log(int level, const char *fmt, ...)
     monitor_write(id, sizeof(id));
 
     va_start(va, fmt);
-    vfprintf(btmon, fmt, va);
+    tfp_vfprintf(btmon, fmt, va);
     va_end(va);
 
     /* null-terminate string */

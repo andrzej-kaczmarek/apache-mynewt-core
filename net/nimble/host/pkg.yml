@@ -29,6 +29,7 @@ pkg.deps:
     - kernel/os
     - net/nimble
     - util/mem
+    - libc/tinyprintf
 
 pkg.deps.BLE_SM_LEGACY:
     - crypto/tinycrypt

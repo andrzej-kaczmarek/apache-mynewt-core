@@ -27,6 +27,7 @@
 #include "os/os.h"
 #include "cbmem/cbmem.h"
 #include "log/log.h"
+#include "tinyprintf/tinyprintf.h"
 
 #if MYNEWT_VAL(LOG_CLI)
 #include "shell/shell.h"
@@ -265,7 +266,7 @@ log_printf(struct log *log, uint16_t module, uint16_t level, char *msg, ...)
     int len;
 
     va_start(args, msg);
-    len = vsnprintf(&buf[LOG_ENTRY_HDR_SIZE], LOG_PRINTF_MAX_ENTRY_LEN, msg,
+    len = tfp_vsnprintf(&buf[LOG_ENTRY_HDR_SIZE], LOG_PRINTF_MAX_ENTRY_LEN, msg,
             args);
     if (len >= LOG_PRINTF_MAX_ENTRY_LEN) {
         len = LOG_PRINTF_MAX_ENTRY_LEN-1;
