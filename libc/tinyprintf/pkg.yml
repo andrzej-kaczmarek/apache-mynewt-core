@@ -17,14 +17,9 @@
 # under the License.
 #
 
-pkg.name: libc/baselibc
+pkg.name: libc/tinyprintf
 pkg.description: Simple libc for embedded systems.
 pkg.author: "Petteri Aimonen"
 pkg.homepage: "https://github.com/PetteriAimonen/Baselibc"
-pkg.keywords:
-    - libc
-pkg.deps:
-    - kernel/os
-    - libc/tinyprintf
 pkg.req_apis:
     - console
