@@ -335,13 +335,13 @@ done:
 
 int bt_mesh_scan_enable(void)
 {
-    struct ble_gap_disc_params scan_param =
-        { .passive = 1, .filter_duplicates = 0, .itvl =
-        MESH_SCAN_INTERVAL, .window = MESH_SCAN_WINDOW };
+//    struct ble_gap_disc_params scan_param =
+//        { .passive = 1, .filter_duplicates = 0, .itvl =
+//        MESH_SCAN_INTERVAL, .window = MESH_SCAN_WINDOW };
+//
+//    BT_DBG("");
 
-    BT_DBG("");
-
-    return ble_gap_disc(g_mesh_addr_type, BLE_HS_FOREVER, &scan_param, NULL, NULL);
+    return 0;//ble_gap_disc(g_mesh_addr_type, BLE_HS_FOREVER, &scan_param, NULL, NULL);
 }
 
 int bt_mesh_scan_disable(void)
