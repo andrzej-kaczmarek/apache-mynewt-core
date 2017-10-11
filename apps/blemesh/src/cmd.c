@@ -211,6 +211,46 @@ cmd_iv_update(int argc, char **argv)
     return rc;
 }
 
+static int
+cmd_scan_wl(int argc, char **argv)
+{
+    extern u8_t g_mesh_addr_type;
+    struct ble_gap_disc_params scan_param =
+        { .passive = 1, .filter_duplicates = 0, .itvl = 0x10, .window = 0x10,
+          .filter_policy = BLE_HCI_SCAN_FILT_USE_WL, };
+    ble_addr_t addr;
+    int rc;
+
+    rc = parse_arg_all(argc - 1, argv + 1);
+    if (rc != 0) {
+        return rc;
+    }
+
+    addr.type = parse_arg_uint8_dflt("addr_type", BLE_ADDR_PUBLIC, &rc);
+    if (rc != 0) {
+        console_printf("invalid 'peer_addr_type' parameter\n");
+        return rc;
+    }
+
+    rc = parse_arg_mac("addr", addr.val);
+    if (rc != 0) {
+        console_printf("invalid 'addr' parameter\n");
+        return rc;
+    }
+
+    rc = ble_gap_wl_set(&addr, 1);
+    if (rc != 0) {
+        console_printf("failed to set whitelist\n");
+        return rc;
+    }
+
+    if (ble_gap_disc_active()) {
+        ble_gap_disc_cancel();
+    }
+
+    return ble_gap_disc(g_mesh_addr_type, BLE_HS_FOREVER, &scan_param, NULL, NULL);
+}
+
 static const struct shell_param iv_update_params[] = {
     {"index", "usage: =<UINT32>"},
     {"update", "usage: =<0-1>"},
@@ -252,6 +292,11 @@ static const struct shell_cmd mesh_commands[] = {
 #if MYNEWT_VAL(SHELL_CMD_HELP)
         .help = &send_msg_help,
 #endif
+    },
+    {
+        .sc_cmd = "scan-wl",
+        .sc_cmd_func = cmd_scan_wl,
+        .help = NULL,
     },
     { NULL, NULL, NULL },
 };
