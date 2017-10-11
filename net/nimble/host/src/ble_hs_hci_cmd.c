@@ -81,12 +81,12 @@ ble_hs_hci_cmd_send(uint16_t opcode, uint8_t len, const void *cmddata)
         memcpy(buf + BLE_HCI_CMD_HDR_LEN, cmddata, len);
     }
 
-#if !BLE_MONITOR
-    BLE_HS_LOG(DEBUG, "ble_hs_hci_cmd_send: ogf=0x%02x ocf=0x%04x len=%d\n",
-               BLE_HCI_OGF(opcode), BLE_HCI_OCF(opcode), len);
-    ble_hs_log_flat_buf(buf, len + BLE_HCI_CMD_HDR_LEN);
-    BLE_HS_LOG(DEBUG, "\n");
-#endif
+//#if !BLE_MONITOR
+//    BLE_HS_LOG(DEBUG, "ble_hs_hci_cmd_send: ogf=0x%02x ocf=0x%04x len=%d\n",
+//               BLE_HCI_OGF(opcode), BLE_HCI_OCF(opcode), len);
+//    ble_hs_log_flat_buf(buf, len + BLE_HCI_CMD_HDR_LEN);
+//    BLE_HS_LOG(DEBUG, "\n");
+//#endif
 
     rc = ble_hs_hci_cmd_transport(buf);
 
