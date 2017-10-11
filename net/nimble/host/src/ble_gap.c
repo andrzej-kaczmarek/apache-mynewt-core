@@ -301,23 +301,23 @@ ble_gap_log_wl(const ble_addr_t *addr, uint8_t white_list_count)
     }
 }
 
-static void
-ble_gap_log_adv(uint8_t own_addr_type, const ble_addr_t *direct_addr,
-                const struct ble_gap_adv_params *adv_params)
-{
-    BLE_HS_LOG(INFO, "disc_mode=%d", adv_params->disc_mode);
-    if (direct_addr) {
-        BLE_HS_LOG(INFO, " direct_addr_type=%d direct_addr=", direct_addr->type);
-        BLE_HS_LOG_ADDR(INFO, direct_addr->val);
-    }
-    BLE_HS_LOG(INFO, " adv_channel_map=%d own_addr_type=%d "
-                     "adv_filter_policy=%d adv_itvl_min=%d adv_itvl_max=%d",
-               adv_params->channel_map,
-               own_addr_type,
-               adv_params->filter_policy,
-               adv_params->itvl_min,
-               adv_params->itvl_max);
-}
+//static void
+//ble_gap_log_adv(uint8_t own_addr_type, const ble_addr_t *direct_addr,
+//                const struct ble_gap_adv_params *adv_params)
+//{
+//    BLE_HS_LOG(INFO, "disc_mode=%d", adv_params->disc_mode);
+//    if (direct_addr) {
+//        BLE_HS_LOG(INFO, " direct_addr_type=%d direct_addr=", direct_addr->type);
+//        BLE_HS_LOG_ADDR(INFO, direct_addr->val);
+//    }
+//    BLE_HS_LOG(INFO, " adv_channel_map=%d own_addr_type=%d "
+//                     "adv_filter_policy=%d adv_itvl_min=%d adv_itvl_max=%d",
+//               adv_params->channel_map,
+//               own_addr_type,
+//               adv_params->filter_policy,
+//               adv_params->itvl_min,
+//               adv_params->itvl_max);
+//}
 
 /*****************************************************************************
  * $snapshot                                                                 *
@@ -1810,7 +1810,7 @@ ble_gap_adv_stop(void)
         goto done;
     }
 
-    BLE_HS_LOG(INFO, "GAP procedure initiated: stop advertising.\n");
+//    BLE_HS_LOG(INFO, "GAP procedure initiated: stop advertising.\n");
 
     rc = ble_gap_adv_enable_tx(0, false);
     if (rc != 0) {
@@ -2213,9 +2213,9 @@ ble_gap_adv_start(uint8_t own_addr_type, const ble_addr_t *direct_addr,
         goto done;
     }
 
-    BLE_HS_LOG(INFO, "GAP procedure initiated: advertise; ");
-    ble_gap_log_adv(own_addr_type, direct_addr, adv_params);
-    BLE_HS_LOG(INFO, "\n");
+//    BLE_HS_LOG(INFO, "GAP procedure initiated: advertise; ");
+//    ble_gap_log_adv(own_addr_type, direct_addr, adv_params);
+//    BLE_HS_LOG(INFO, "\n");
 
     ble_gap_slave.cb = cb;
     ble_gap_slave.cb_arg = cb_arg;
