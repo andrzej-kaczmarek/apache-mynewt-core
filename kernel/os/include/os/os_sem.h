@@ -29,8 +29,8 @@ extern "C" {
 struct os_sem
 {
     SLIST_HEAD(, os_task) sem_head;     /* chain of waiting tasks */
-    uint16_t    _pad;
     uint16_t    sem_tokens;             /* # of tokens */
+    uint16_t    sem_limit;              /* limit # of tokens */
 };
 
 /* 
@@ -46,6 +46,9 @@ struct os_sem
 
 /* Create a semaphore */
 os_error_t os_sem_init(struct os_sem *sem, uint16_t tokens);
+
+/* Create a semaphore with tokens limit */
+os_error_t os_sem_limit_init(struct os_sem *sem, uint16_t tokens, uint16_t limit);
 
 /* Release a semaphore */
 os_error_t os_sem_release(struct os_sem *sem);

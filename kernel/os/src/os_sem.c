@@ -49,11 +49,19 @@
 os_error_t
 os_sem_init(struct os_sem *sem, uint16_t tokens)
 {
+    return os_sem_limit_init(sem, tokens, 0);
+}
+
+/* Create a semaphore with tokens limit */
+os_error_t
+os_sem_limit_init(struct os_sem *sem, uint16_t tokens, uint16_t limit)
+{
     if (!sem) {
         return OS_INVALID_PARM;
     }
 
     sem->sem_tokens = tokens;
+    sem->sem_limit = limit;
     SLIST_FIRST(&sem->sem_head) = NULL;
 
     return OS_OK;
@@ -107,7 +115,9 @@ os_sem_release(struct os_sem *sem)
         }
     } else {
         /* Add to the number of tokens */
-        sem->sem_tokens++;
+        if (sem->sem_limit == 0 || sem->sem_tokens < sem->sem_limit) {
+            sem->sem_tokens++;
+        }
     }
 
     OS_EXIT_CRITICAL(sr);
