@@ -407,7 +407,7 @@ nrf52_pwm_configure_channel(struct pwm_dev *dev,
         0 :
         NRFX_PWM_FLAG_LOOP;
     instance->flags |= (instance->cycle_handler) ?
-        (NRFX_PWM_FLAG_SIGNAL_END_SEQ0 | NRFX_PWM_FLAG_SIGNAL_END_SEQ0) :
+        (NRFX_PWM_FLAG_SIGNAL_END_SEQ0 | NRFX_PWM_FLAG_SIGNAL_END_SEQ1) :
         0;
     instance->flags |= (instance->seq_end_handler) ?
         0 :
