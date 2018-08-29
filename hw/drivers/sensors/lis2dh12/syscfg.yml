@@ -43,7 +43,8 @@ syscfg.defs:
         value : 0x19
     LIS2DH12_CLI:
         description: 'Enable shell support for the LIS2DH12'
-        value: 0
+        # TODO change back to 0
+        value: 1
     LIS2DH12_NOTIF_STATS:
         description: 'Enable notification stats'
         value: 1

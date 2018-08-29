@@ -109,6 +109,301 @@ syscfg.defs:
         description: 'ruuvi-tag onboard lis2dh12 sensor'
         value:  0
 
+    # LIS2DH12
+    LIS2DH12_CFG_RATE:
+        description: >
+            Output data rate and mode selection.
+            LIS2DH12_DATA_RATE_0HZ
+            LIS2DH12_DATA_RATE_1HZ
+            LIS2DH12_DATA_RATE_10HZ
+            LIS2DH12_DATA_RATE_25HZ
+            LIS2DH12_DATA_RATE_50HZ
+            LIS2DH12_DATA_RATE_100HZ
+            LIS2DH12_DATA_RATE_200HZ
+            LIS2DH12_DATA_RATE_400HZ
+            LIS2DH12_DATA_RATE_L_1620HZ
+            LIS2DH12_DATA_RATE_HN_1344HZ_L_5376HZ
+        value: 'LIS2DH12_DATA_RATE_200HZ'
+
+    LIS2DH12_CFG_FS:
+        description: >
+            Full-scale selection.
+            LIS2DH12_FS_2G
+            LIS2DH12_FS_4G
+            LIS2DH12_FS_8G
+            LIS2DH12_FS_16G
+        value: 'LIS2DH12_FS_2G'
+
+    LIS2DH12_CFG_REFERENCE:
+        description: >
+            Reference value for interrupt generation (-128..127)
+        value: 0
+
+    LIS2DH12_CFG_TAP_EN_XS:
+        description: >
+            Enable interrupt single-click on X-axis
+        value: 0
+
+    LIS2DH12_CFG_TAP_EN_YS:
+        description: >
+            Enable interrupt single-click on Y-axis
+        value: 0
+
+    LIS2DH12_CFG_TAP_EN_ZS:
+        description: >
+            Enable interrupt single-click on Z-axis
+        value: 0
+
+    LIS2DH12_CFG_TAP_EN_XD:
+        description: >
+            Enable interrupt double-click on X-axis
+        value: 0
+
+    LIS2DH12_CFG_TAP_EN_YD:
+        description: >
+            Enable interrupt double-click on Y-axis
+        value: 0
+
+    LIS2DH12_CFG_TAP_EN_ZD:
+        description: >
+            Enable interrupt double-click on Z-axis
+        value: 0
+
+    LIS2DH12_CFG_TAP_THS:
+        description: >
+            Tap threshold (0..127)
+        value: 0
+
+    LIS2DH12_CFG_TAP_TIME_LIMIT:
+        description: >
+            Tap time limit (0..127) 1 LSB = 1/ODR
+        value: 15
+
+    LIS2DH12_CFG_TAP_TIME_LATENCY:
+        description: >
+            Tap time latency (0..255) 1 LSB = 1/ODR
+        value: 30
+
+    LIS2DH12_CFG_TAP_TIME_WINDOW:
+        description: >
+            Tap time window (0..255) 1 LSB = 1/ODR
+        value: 80
+
+    LIS2DH12_CFG_READ_MODE_MODE:
+        description: >
+            Set driver in a cyclic interval to retrieve data (LIS2DH12_READ_M_POLL)
+            or to read X number of data at once out of the devices buffer.
+            LIS2DH12_READ_M_POLL
+            LIS2DH12_READ_M_STREAM
+        value: 'LIS2DH12_READ_M_STREAM'
+
+    LIS2DH12_CFG_READ_MODE_INT_NUM:
+        description: >
+            Interrupt source pin:
+            0 - INT_1 ; 1 - INT_2
+        value: '0'
+
+    LIS2DH12_CFG_READ_MODE_INT_CFG:
+        description: >
+            Select an interrupt to trigger on. This is used for LIS2DH12_READ_M_STREAM.
+            LIS2DH12_CTRL_REG3_I1_ZYXDA
+            LIS2DH12_CTRL_REG3_I1_WTM
+        value: 'LIS2DH12_CTRL_REG3_I1_ZYXDA'
+
+    LIS2DH12_CFG_INT1_XLIE:
+        description: >
+            Enable interrupt generation on X low event
+        value: 0
+
+    LIS2DH12_CFG_INT1_XHIE:
+        description: >
+            Enable interrupt generation on X high event
+        value: 0
+
+    LIS2DH12_CFG_INT1_YLIE:
+        description: >
+            Enable interrupt generation on Y low event
+        value: 0
+
+    LIS2DH12_CFG_INT1_YHIE:
+        description: >
+            Enable interrupt generation on Y high event
+        value: 0
+
+    LIS2DH12_CFG_INT1_ZLIE:
+        description: >
+            Enable interrupt generation on Z low event
+        value: 0
+
+    LIS2DH12_CFG_INT1_ZHIE:
+        description: >
+            Enable interrupt generation on Z high event
+        value: 0
+
+    LIS2DH12_CFG_INT1_AOI_6D:
+        description: >
+            Interrupt mode:
+            LIS2DH12_INT1_CFG_M_OR
+            LIS2DH12_INT1_CFG_M_6DM
+            LIS2DH12_INT1_CFG_M_AND
+            LIS2DH12_INT1_CFG_M_6PR
+        value: 'LIS2DH12_INT1_CFG_M_OR'
+
+    LIS2DH12_CFG_INT1_THS:
+        description: >
+            Interrupt 1 threshold.
+            1 LSb = 16 mg @ FS = 2 g
+            1 LSb = 32 mg @ FS = 4 g
+            1 LSb = 62 mg @ FS = 8 g
+            1 LSb = 186 mg @ FS = 16 g
+        value: 0
+
+    LIS2DH12_CFG_INT1_DUR:
+        description: >
+            The  minimum duration of the Interrupt event to be recognized. Duration
+            steps and maximum values depend on the ODR chosen.
+            Duration time is measured in N/ODR, where N is the content of the duration register.
+        value: 0
+
+    LIS2DH12_INT1_CFG_TRIGGER:
+        description: >
+            Edge that interrupt is configured for
+            HAL_GPIO_TRIG_RISING
+            HAL_GPIO_TRIG_FALLING
+            HAL_GPIO_TRIG_BOTH
+        value: HAL_GPIO_TRIG_RISING
+
+    LIS2DH12_CFG_INT2_XLIE:
+        description: >
+            Enable interrupt generation on X low event
+        value: 0
+
+    LIS2DH12_CFG_INT2_XHIE:
+        description: >
+            Enable interrupt generation on X high event
+        value: 0
+
+    LIS2DH12_CFG_INT2_YLIE:
+        description: >
+            Enable interrupt generation on Y low event
+        value: 0
+
+    LIS2DH12_CFG_INT2_YHIE:
+        description: >
+            Enable interrupt generation on Y high event
+        value: 0
+
+    LIS2DH12_CFG_INT2_ZLIE:
+        description: >
+            Enable interrupt generation on Z low event
+        value: 0
+
+    LIS2DH12_CFG_INT2_ZHIE:
+        description: >
+            Enable interrupt generation on Z high event
+        value: 0
+
+    LIS2DH12_CFG_INT2_AOI_6D:
+        description: >
+            Interrupt mode:
+            LIS2DH12_INT2_CFG_M_OR
+            LIS2DH12_INT2_CFG_M_6DM
+            LIS2DH12_INT2_CFG_M_AND
+            LIS2DH12_INT2_CFG_M_6PR
+        value: 'LIS2DH12_INT2_CFG_M_OR'
+
+    LIS2DH12_CFG_INT2_THS:
+        description: >
+            Interrupt 1 threshold.
+            1 LSb = 16 mg @ FS = 2 g
+            1 LSb = 32 mg @ FS = 4 g
+            1 LSb = 62 mg @ FS = 8 g
+            1 LSb = 186 mg @ FS = 16 g
+        value: 0
+
+    LIS2DH12_CFG_INT2_DUR:
+        description: >
+            The  minimum duration of the Interrupt event to be recognized. Duration
+            steps and maximum values depend on the ODR chosen.
+            Duration time is measured in N/ODR, where N is the content of the duration register.
+        value: 0
+
+    LIS2DH12_INT2_CFG_TRIGGER:
+        description: >
+            Edge that interrupt is configured for
+            HAL_GPIO_TRIG_RISING
+            HAL_GPIO_TRIG_FALLING
+            HAL_GPIO_TRIG_BOTH
+        value: HAL_GPIO_TRIG_BOTH
+
+    LIS2DH12_CFG_POWER_MODE:
+        description: >
+            LIS2DH12_OM_LOW_POWER
+            LIS2DH12_OM_NORMAL
+            LIS2DH12_OM_HIGH_RESOLUTION
+        value: 'LIS2DH12_OM_NORMAL'
+
+    LIS2DH12_CFG_FIFO_MODE:
+        description: >
+            FIFO mode selection bits.
+            LIS2DH12_FIFO_M_BYPASS
+            LIS2DH12_FIFO_M_FIFO
+            LIS2DH12_FIFO_M_STREAM
+            LIS2DH12_FIFO_M_STREAM_FIFO
+        value: 'LIS2DH12_FIFO_M_STREAM'
+
+    LIS2DH12_CFG_FIFO_WATERMARK:
+        description: >
+            FIFO watermark for WTM interrupt.
+            WTM interrupt is generated when FIFO content exceeds this value.
+            5 - bit Value (0 - 31)
+        value: '0'
+
+    LIS2DH12_CFG_ACT_THS:
+        description: >
+            Sleep-to-wake, return-to-sleep activation threshold in low-power mode
+            1 LSb = 16 mg @ FS = 2 g
+            1 LSb = 32 mg @ FS = 4 g
+            1 LSb = 62 mg @ FS = 8 g
+            1 LSb = 186 mg @ FS = 16 g
+        value: '10'
+
+    LIS2DH12_CFG_ACT_DUR:
+        description: >
+            Sleep-to-wake, return-to-sleep duration.
+            1 LSb = (8*1[LSb]+1)/ODR
+        value: '40'
+
+    LIS2DH12_CFG_LATCH_INT1:
+        description: >
+            Latch interrupt request on INT1_SRC (31h), with INT1_SRC (31h) register cleared
+            by reading INT1_SRC (31h) itself.
+        value: 1
+
+    LIS2DH12_CFG_LATCH_INT2:
+        description: >
+            Latch interrupt request on INT2_SRC (35h) register, with INT2_SRC (35h) register
+            cleared by reading INT2_SRC (35h) itself
+        value: 0
+
+    LIS2DH12_CFG_MASK:
+        descrption: >
+            Sensor type within sensor layer.
+        value: 'SENSOR_TYPE_ACCELEROMETER'
+
+    SENSOR_MOTION_ENABLE:
+        description: >
+            Enable/disable the motion sensor placed on-board for motion
+            readings (0/1)
+        value: 1
+
+    SENSOR_MOTION_TYPE:
+        description: >
+            Specific sensor mounted to the board for motion readings
+            (BSP_MOTION_SENSOR_x)
+            (See bsp.h for BSP_MOTION_SENSOR_x definitions)
+        value: 'BSP_MOTION_SENSOR_LIS2DH12'
+
 syscfg.defs.BLE_LP_CLOCK:
     TIMER_0:
         value: 0
@@ -123,6 +418,7 @@ syscfg.vals:
     MCU_DCDC_ENABLED: 1
     XTAL_32768: 1
     BOOT_SERIAL_DETECT_PIN: 13  # Button 1
+    HARDFLOAT: 1
 
 syscfg.vals.BLE_LP_CLOCK:
     OS_CPUTIME_FREQ: 32768

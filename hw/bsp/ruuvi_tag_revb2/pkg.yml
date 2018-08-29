@@ -33,10 +33,13 @@ pkg.cflags:
 
 pkg.cflags.HARDFLOAT:
     - -mfloat-abi=hard -mfpu=fpv4-sp-d16
+pkg.lflags:
+    - -lm
 
 pkg.deps:
     - "@apache-mynewt-core/hw/mcu/nordic/nrf52xxx-compat"
     - "@apache-mynewt-core/libc/baselibc"
+    - "@apache-mynewt-core/hw/drivers/sensors/lis2dh12"
 
 pkg.deps.BLE_DEVICE:
     - "@apache-mynewt-core/hw/drivers/nimble/nrf52"
@@ -71,3 +74,4 @@ pkg.deps.LIS2DH12_ONB:
 pkg.init:
     config_lis2dh12_sensor: 400
     config_bme280_sensor: 400
+    bsp_pkg_init: 1000
