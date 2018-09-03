@@ -36,6 +36,7 @@ pkg.cflags.HARDFLOAT:
 pkg.deps:
     - "@apache-mynewt-core/hw/mcu/nordic/nrf52xxx"
     - "@apache-mynewt-core/libc/baselibc"
+    - "@apache-mynewt-core/hw/drivers/sensors/lis2dh12"
 
 pkg.deps.SOFT_PWM:
     - "@apache-mynewt-core/hw/drivers/pwm/soft_pwm"
@@ -45,3 +46,4 @@ pkg.deps.LIS2DH12_ONB:
 
 pkg.init:
     config_lis2dh12_sensor: 400
+    bsp_pkg_init: 1000

@@ -43,6 +43,9 @@ extern uint8_t _ram_start;
 #define LED_BLINK_PIN   (-1)
 #define LED_2           (-1)
 
+#define ACC_INT1        (13)
+#define ACC_INT2        (12)
+
 #ifdef __cplusplus
 }
 #endif
