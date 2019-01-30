@@ -21,6 +21,10 @@
 #include "mcu/nrf52_hal.h"
 #include "nrfx.h"
 
+int hfclk_state_gpiote;
+int hfclk_requested_state_gpiote;
+int hfclk_request_gpiote;
+
 static uint8_t nrf52_clock_hfxo_refcnt;
 
 /**
@@ -35,11 +39,15 @@ nrf52_clock_hfxo_request(void)
     int started;
     uint32_t ctx;
 
+    NRF_GPIOTE->TASKS_SET[hfclk_request_gpiote] = 1;
+    NRF_GPIOTE->TASKS_CLR[hfclk_request_gpiote] = 1;
+
     started = 0;
     __HAL_DISABLE_INTERRUPTS(ctx);
     assert(nrf52_clock_hfxo_refcnt < 0xff);
     if (nrf52_clock_hfxo_refcnt == 0) {
         NRF_CLOCK->TASKS_HFCLKSTART = 1;
+        NRF_GPIOTE->TASKS_SET[hfclk_requested_state_gpiote] = 1;
         started = 1;
     }
     ++nrf52_clock_hfxo_refcnt;
@@ -63,11 +71,18 @@ nrf52_clock_hfxo_release(void)
     int stopped;
     uint32_t ctx;
 
+    NRF_GPIOTE->TASKS_SET[hfclk_request_gpiote] = 1;
+    NRF_GPIOTE->TASKS_CLR[hfclk_request_gpiote] = 1;
+    NRF_GPIOTE->TASKS_SET[hfclk_request_gpiote] = 1;
+    NRF_GPIOTE->TASKS_CLR[hfclk_request_gpiote] = 1;
+
     stopped = 0;
     __HAL_DISABLE_INTERRUPTS(ctx);
     assert(nrf52_clock_hfxo_refcnt != 0);
     --nrf52_clock_hfxo_refcnt;
     if (nrf52_clock_hfxo_refcnt == 0) {
+        NRF_GPIOTE->TASKS_CLR[hfclk_state_gpiote] = 1;
+        NRF_GPIOTE->TASKS_CLR[hfclk_requested_state_gpiote] = 1;
         NRF_CLOCK->TASKS_HFCLKSTOP = 1;
         stopped = 1;
     }

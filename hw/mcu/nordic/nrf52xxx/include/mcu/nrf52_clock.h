@@ -24,6 +24,10 @@
  extern "C" {
 #endif
 
+ extern int hfclk_state_gpiote;
+ extern int hfclk_requested_state_gpiote;
+ extern int hfclk_request_gpiote;
+
 /**
  * Request HFXO clock be turned on. Note that each request must have a
  * corresponding release.
