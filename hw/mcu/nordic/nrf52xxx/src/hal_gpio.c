@@ -66,6 +66,8 @@
 
 /* Storage for GPIO callbacks. */
 struct hal_gpio_irq {
+    uint8_t trig;
+    int pin;
     hal_gpio_irq_handler_t func;
     void *arg;
 };
@@ -208,17 +210,29 @@ static void
 hal_gpio_irq_handler(void)
 {
     int i;
+    int pin;
 
     os_trace_isr_enter();
 
     for (i = 0; i < HAL_GPIO_MAX_IRQ; i++) {
-        if (NRF_GPIOTE->EVENTS_IN[i] && (NRF_GPIOTE->INTENSET & (1 << i))) {
-            NRF_GPIOTE->EVENTS_IN[i] = 0;
-            if (hal_gpio_irqs[i].func) {
-                hal_gpio_irqs[i].func(hal_gpio_irqs[i].arg);
+        pin = hal_gpio_irqs[i].pin;
+        if (hal_gpio_irqs[i].func && (NRF_GPIO->LATCH & (1 << pin))) {
+            hal_gpio_irqs[i].func(hal_gpio_irqs[i].arg);
+
+            /* switch trigger if shall be triggerd on both */
+            if (hal_gpio_irqs[i].trig == HAL_GPIO_TRIG_BOTH) {
+                NRF_GPIO->PIN_CNF[pin] &= ~GPIO_PIN_CNF_SENSE_Msk;
+                if (NRF_GPIO->IN & (1 << pin)) {
+                    NRF_GPIO->PIN_CNF[pin] |= GPIO_PIN_CNF_SENSE_Low << GPIO_PIN_CNF_SENSE_Pos;
+                } else {
+                    NRF_GPIO->PIN_CNF[pin] |= GPIO_PIN_CNF_SENSE_High << GPIO_PIN_CNF_SENSE_Pos;
+                }
             }
         }
     }
+
+    NRF_GPIO->LATCH = -1;
+    NRF_GPIOTE->EVENTS_PORT = 0;
 
     os_trace_isr_exit();
 }
@@ -266,9 +280,8 @@ hal_gpio_find_pin(int pin)
     pin = pin << GPIOTE_CONFIG_PSEL_Pos;
 
     for (i = 0; i < HAL_GPIO_MAX_IRQ; i++) {
-        if (hal_gpio_irqs[i].func &&
-           (NRF_GPIOTE->CONFIG[i] & HAL_GPIOTE_PIN_MASK) == pin) {
-            return i;
+        if (hal_gpio_irqs[i].func) {
+            return 0;
         }
     }
     return -1;
@@ -291,7 +304,6 @@ int
 hal_gpio_irq_init(int pin, hal_gpio_irq_handler_t handler, void *arg,
                   hal_gpio_irq_trig_t trig, hal_gpio_pull_t pull)
 {
-    uint32_t conf;
     int i;
 
     hal_gpio_irq_setup();
@@ -301,24 +313,28 @@ hal_gpio_irq_init(int pin, hal_gpio_irq_handler_t handler, void *arg,
     }
     hal_gpio_init_in(pin, pull);
 
+    NRF_GPIO->PIN_CNF[pin] &= ~GPIO_PIN_CNF_SENSE_Msk;
+
     switch (trig) {
     case HAL_GPIO_TRIG_RISING:
-        conf = GPIOTE_CONFIG_POLARITY_LoToHi << GPIOTE_CONFIG_POLARITY_Pos;
+        NRF_GPIO->PIN_CNF[pin] |= GPIO_PIN_CNF_SENSE_High << GPIO_PIN_CNF_SENSE_Pos;
         break;
     case HAL_GPIO_TRIG_FALLING:
-        conf = GPIOTE_CONFIG_POLARITY_HiToLo << GPIOTE_CONFIG_POLARITY_Pos;
+        NRF_GPIO->PIN_CNF[pin] |= GPIO_PIN_CNF_SENSE_Low << GPIO_PIN_CNF_SENSE_Pos;
         break;
     case HAL_GPIO_TRIG_BOTH:
-        conf = GPIOTE_CONFIG_POLARITY_Toggle << GPIOTE_CONFIG_POLARITY_Pos;
+        if (NRF_GPIO->IN & (1 << pin)) {
+            NRF_GPIO->PIN_CNF[pin] |= GPIO_PIN_CNF_SENSE_Low << GPIO_PIN_CNF_SENSE_Pos;
+        } else {
+            NRF_GPIO->PIN_CNF[pin] |= GPIO_PIN_CNF_SENSE_High << GPIO_PIN_CNF_SENSE_Pos;
+        }
         break;
     default:
         return -1;
     }
-    conf |= pin << GPIOTE_CONFIG_PSEL_Pos;
-    conf |= GPIOTE_CONFIG_MODE_Event << GPIOTE_CONFIG_MODE_Pos;
 
-    NRF_GPIOTE->CONFIG[i] = conf;
-
+    hal_gpio_irqs[i].pin = pin;
+    hal_gpio_irqs[i].trig = trig;
     hal_gpio_irqs[i].func = handler;
     hal_gpio_irqs[i].arg = arg;
 
@@ -345,9 +361,11 @@ hal_gpio_irq_release(int pin)
     }
     hal_gpio_irq_disable(pin);
 
-    NRF_GPIOTE->CONFIG[i] = 0;
-    NRF_GPIOTE->EVENTS_IN[i] = 0;
+    /* fixme */
+    NRF_GPIOTE->INTENCLR = GPIOTE_INTENSET_PORT_Msk;
+    NRF_GPIOTE->EVENTS_PORT = 0;
 
+    hal_gpio_irqs[i].pin = -1;
     hal_gpio_irqs[i].arg = NULL;
     hal_gpio_irqs[i].func = NULL;
 }
@@ -368,8 +386,10 @@ hal_gpio_irq_enable(int pin)
     if (i < 0) {
         return;
     }
-    NRF_GPIOTE->EVENTS_IN[i] = 0;
-    NRF_GPIOTE->INTENSET = 1 << i;
+    /* fixme */
+    NRF_GPIO->LATCH = 0;
+    NRF_GPIOTE->EVENTS_PORT = 0;
+    NRF_GPIOTE->INTENSET = GPIOTE_INTENSET_PORT_Msk;
 }
 
 /**
@@ -387,5 +407,5 @@ hal_gpio_irq_disable(int pin)
     if (i < 0) {
         return;
     }
-    NRF_GPIOTE->INTENCLR = 1 << i;
+    /* todo */
 }
