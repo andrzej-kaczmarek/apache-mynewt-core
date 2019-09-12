@@ -20,6 +20,7 @@
 #include <assert.h>
 #include "syscfg/syscfg.h"
 #include "mcu/da1469x_clock.h"
+#include "mcu/da1469x_trimv.h"
 #include "mcu/da1469x_pd.h"
 #include "mcu/da1469x_pdc.h"
 #include "hal/hal_system.h"
@@ -57,6 +58,8 @@ hal_system_init(void)
         g_hal_reset_reason = 0;
     }
 #endif
+
+    da1469x_trimv_init_from_otp();
 }
 
 void
