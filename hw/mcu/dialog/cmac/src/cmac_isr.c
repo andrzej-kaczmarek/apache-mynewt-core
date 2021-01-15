@@ -36,6 +36,12 @@ SYS2CMAC_IRQHandler(void)
         g_cmac_shared_data.pending_ops = 0;
         cmac_shared_unlock();
 
+        if (cmac_mbox_read_is_ready()) {
+            /* FIXME: register via callback */
+            extern void queue_s2c_read(void);
+            queue_s2c_read();
+        }
+
         cmac_mbox_read();
         cmac_rand_read();
 
