@@ -104,6 +104,8 @@ uint16_t ipc_nrf5340_read_om(int channel, struct os_mbuf *om, uint16_t len);
  */
 uint16_t ipc_nrf5340_available(int channel);
 
+uint16_t ipc_nrf5340_available_flat(int channel, void **dptr);
+
 /**
  * Consumes data from IPC ring buffer without copying. Should be used only
  * from ipc_nrf5340_recv_cb context.
