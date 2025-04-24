@@ -67,7 +67,7 @@ syscfg.defs:
         description: >
             Enable logging TLV with custom data types in every log entry
             0 - disable; 1 - enable.
-        value: 0
+        value: 1
 
     LOG_FCB:
         description: 'Support logging to FCB.'
